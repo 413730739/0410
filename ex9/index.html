@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>待辦事項清單</title>
+  <style>
+    body {
+      position: relative;
+      overflow-x: hidden;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      max-width: 700px;
+      margin: 40px auto;
+      padding: 40px 20px;
+      background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 100%);
+      min-height: 100vh;
+    }
+    body > *:not(.bubble-container) {
+      position: relative;
+      z-index: 1;
+    }
+    .bubble-container {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .bubble {
+      position: absolute;
+      bottom: -120px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.65);
+      opacity: 0.8;
+      animation: floatUp linear infinite;
+    }
+    .bubble:nth-child(1) { left: 5%; width: 50px; height: 50px; animation-duration: 14s; animation-delay: 0s; }
+    .bubble:nth-child(2) { left: 22%; width: 32px; height: 32px; animation-duration: 10s; animation-delay: 2s; }
+    .bubble:nth-child(3) { left: 38%; width: 60px; height: 60px; animation-duration: 17s; animation-delay: 1s; }
+    .bubble:nth-child(4) { left: 55%; width: 24px; height: 24px; animation-duration: 12s; animation-delay: 3s; }
+    .bubble:nth-child(5) { left: 70%; width: 42px; height: 42px; animation-duration: 16s; animation-delay: 4s; }
+    .bubble:nth-child(6) { left: 85%; width: 28px; height: 28px; animation-duration: 11s; animation-delay: 5s; }
+    .bubble:nth-child(7) { left: 45%; width: 36px; height: 36px; animation-duration: 13s; animation-delay: 6s; }
+    .bubble:nth-child(8) { left: 90%; width: 48px; height: 48px; animation-duration: 18s; animation-delay: 2.5s; }
+    @keyframes floatUp {
+      0% { transform: translateY(0) scale(1); opacity: 0.8; }
+      100% { transform: translateY(-130vh) scale(1.2); opacity: 0.1; }
+    }
+    .menu-button {
+      display: inline-block;
+        margin-bottom: 24px;
+        padding: 10px 22px;
+      background: rgba(255, 255, 255, 0.8);
+      color: #1a73e8;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 600;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        backdrop-filter: blur(5px);
+    }
+    .menu-button:hover {
+      background: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    }
+    #app {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      border: 1px solid rgba(255,255,255,0.5);
+    }
+    h1 { color: #1e293b; text-align: center; margin-bottom: 25px; font-weight: 800; }
+    .input-area {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    input[type="text"] {
+      flex: 1;
+      padding: 12px 16px;
+      border: 2px solid #e2e8f0;
+      border-radius: 10px;
+      font-size: 16px;
+      transition: border-color 0.2s;
+    }
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #3b82f6;
+    }
+    button {
+      padding: 12px 24px;
+      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+    button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4); }
+    button:active { transform: translateY(0); }
+    .todo-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: white;
+      padding: 16px;
+      margin-bottom: 10px;
+      border-radius: 16px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+      transition: transform 0.2s;
+      border: 1px solid rgba(255,255,255,0.5);
+    }
+    .todo-item:hover { transform: translateX(5px); }
+    .done-text {
+      text-decoration: line-through;
+      color: #aaa;
+      flex: 1;
+    }
+    .normal-text { flex: 1; }
+    .delete-btn {
+      background: linear-gradient(135deg, #f87171 0%, #ef4444 100%);
+      padding: 6px 12px;
+      font-size: 13px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(239, 68, 68, 0.2);
+    }
+    .delete-btn:hover { box-shadow: 0 6px 15px rgba(239, 68, 68, 0.3); transform: translateY(-1px); }
+    .summary {
+      color: #666;
+      font-size: 14px;
+      margin-top: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="bubble-container">
+    <span class="bubble"></span>
+    <span class="bubble"></span>
+    <span class="bubble"></span>
+    <span class="bubble"></span>
+    <span class="bubble"></span>
+    <span class="bubble"></span>
+    <span class="bubble"></span>
+    <span class="bubble"></span>
+  </div>
+  <a class="menu-button" href="../index.html">主選單</a>
+
+<div id="app">
+  <h1>📝 待辦事項</h1>
+
+  <!-- 輸入區 -->
+  <div class="input-area">
+    <input
+      v-model="newTodo"
+      @keyup.enter="addTodo"
+      type="text"
+      placeholder="輸入待辦事項，按 Enter 新增"
+    />
+    <button @click="addTodo">新增</button>
+  </div>
+
+  <!-- 待辦清單 -->
+  <div
+    v-for="todo in todos"
+    :key="todo.id"
+    class="todo-item"
+  >
+    <input type="checkbox" v-model="todo.done" />
+    <span :class="todo.done ? 'done-text' : 'normal-text'">
+      {{ todo.text }}
+    </span>
+    <button class="delete-btn" @click="removeTodo(todo.id)">刪除</button>
+  </div>
+
+  <!-- 空清單提示 -->
+  <p v-if="todos.length === 0" style="color:#aaa">還沒有待辦事項，新增一個吧！</p>
+
+  <!-- 統計 -->
+  <p class="summary" v-if="todos.length > 0">
+    共 {{ todos.length }} 項，待完成 {{ remaining }} 項
+  </p>
+</div>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script>
+Vue.createApp({
+  data() {
+    return {
+      newTodo: "",      // 輸入框的文字
+      nextId: 1,        // 用來產生不重複 id
+      todos: [
+        { id: 1, text: "學習 Vue.js 基礎", done: true },
+        { id: 2, text: "完成待辦清單專案", done: false },
+        { id: 3, text: "繼續學習 Vue 進階功能", done: false }
+      ]
+    }
+  },
+  computed: {
+    // 計算未完成的數量
+    remaining() {
+      return this.todos.filter(todo => !todo.done).length
+    }
+  },
+  methods: {
+    // 新增待辦事項
+    addTodo() {
+      const text = this.newTodo.trim()
+      if (!text) return          // 空白就不新增
+      this.nextId++
+      this.todos.push({
+        id: this.nextId,
+        text: text,
+        done: false
+      })
+      this.newTodo = ""          // 清空輸入框
+    },
+    // 刪除待辦事項
+    removeTodo(id) {
+      this.todos = this.todos.filter(todo => todo.id !== id)
+    }
+  }
+}).mount("#app")
+</script>
+
+</body>
+</html>
