@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>主選單</title>
+    <style>
+      body {
+        position: relative;
+        overflow-x: hidden;
+        font-family: "Segoe UI", Roboto, Helvetica, Arial, "Noto Sans TC", sans-serif;
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 40px 20px;
+        line-height: 1.6;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        min-height: 100vh;
+      }
+      body > *:not(.bubble-container) {
+        position: relative;
+        z-index: 1;
+      }
+      .bubble-container {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+      }
+      .bubble {
+        position: absolute;
+        bottom: -120px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.4);
+        opacity: 0.8;
+        animation: floatUp linear infinite;
+      }
+      .bubble:nth-child(1) { left: 5%; width: 50px; height: 50px; animation-duration: 14s; animation-delay: 0s; }
+      .bubble:nth-child(2) { left: 22%; width: 32px; height: 32px; animation-duration: 10s; animation-delay: 2s; }
+      .bubble:nth-child(3) { left: 38%; width: 60px; height: 60px; animation-duration: 17s; animation-delay: 1s; }
+      .bubble:nth-child(4) { left: 55%; width: 24px; height: 24px; animation-duration: 12s; animation-delay: 3s; }
+      .bubble:nth-child(5) { left: 70%; width: 42px; height: 42px; animation-duration: 16s; animation-delay: 4s; }
+      .bubble:nth-child(6) { left: 85%; width: 28px; height: 28px; animation-duration: 11s; animation-delay: 5s; }
+      .bubble:nth-child(7) { left: 45%; width: 36px; height: 36px; animation-duration: 13s; animation-delay: 6s; }
+      .bubble:nth-child(8) { left: 90%; width: 48px; height: 48px; animation-duration: 18s; animation-delay: 2.5s; }
+      @keyframes floatUp {
+        0% { transform: translateY(0) scale(1); opacity: 0.8; }
+        100% { transform: translateY(-130vh) scale(1.2); opacity: 0.1; }
+      }
+      h1 {
+        color: #2c3e50;
+        text-align: center;
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+      }
+      h2 {
+        color: #546e7a;
+        text-align: center;
+        font-weight: normal;
+        margin-bottom: 2rem;
+      }
+      p {
+        text-align: center;
+        color: #7f8c8d;
+        margin-bottom: 30px;
+      }
+      ul {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 20px;
+        padding: 0;
+        list-style: none;
+      }
+      li a {
+        display: block;
+        background: rgba(255, 255, 255, 0.8);
+        padding: 20px;
+        border-radius: 16px;
+        color: #34495e;
+        text-decoration: none;
+        text-align: center;
+        box-shadow: 0 8px 15px rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+        border: 1px solid rgba(255,255,255,0.4);
+        backdrop-filter: blur(5px);
+      }
+      li a:hover {
+        transform: translateY(-8px);
+        background: #fff;
+        box-shadow: 0 15px 30px rgba(0,0,0,0.12);
+        color: #1a73e8;
+      }
+    </style>
+</head>
+<body>
+  <div class="bubble-container">
+    <span class="bubble"></span>
+    <span class="bubble"></span>
+    <span class="bubble"></span>
+    <span class="bubble"></span>
+    <span class="bubble"></span>
+    <span class="bubble"></span>
+    <span class="bubble"></span>
+    <span class="bubble"></span>
+  </div>
+  <h1>目錄</h1>
+  <h2>學號：413730739</h2>
+  <p>請點選下方連結，快速前往各個單元頁面：</p>
+  <ul>
+    <li><a href="ex1/index.html">淡江大學教育科技學系</a></li>
+    <li><a href="ex2/index.html">小華 自我介紹</a></li>
+    <li><a href="ex3/index.html">點擊計數器</a></li>
+    <li><a href="ex4/index.html">姓名問候</a></li>
+    <li><a href="ex5/index.html">切換顯示狀態</a></li>
+    <li><a href="ex6/index.html">水果清單</a></li>
+    <li><a href="ex7/index.html">打折含稅計算</a></li>
+    <li><a href="ex8/index.html">動態顏色與大小</a></li>
+    <li><a href="ex9/index.html">待辦事項清單</a></li>
+  </ul>
+</body>
+</html>
